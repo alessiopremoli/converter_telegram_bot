@@ -75,7 +75,7 @@ const currencyConverter = new WizardScene(
     ctx => {
         if(ctx.message.text === 'stop' || ctx.message.text === '/stop') {
             leaveWizard(ctx);
-            } else {
+        } else {
             const amt = (ctx.wizard.state.amount = ctx.message.text);
             const source = ctx.wizard.state.currencySource;
             const dest = ctx.wizard.state.currencyDestination;
@@ -100,7 +100,7 @@ const currencyConverter = new WizardScene(
                         Markup.callbackButton("Convert another currency", "CONVERT_CURRENCY")
                     ]).extra()
                 );
-            })
+            });
             return ctx.scene.leave();
         }
     }

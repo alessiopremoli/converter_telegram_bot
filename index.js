@@ -84,7 +84,6 @@ const currencyConverter = new WizardScene(
             rates.then(res => {
                 let newAmount = res.data.rates[dest] * amt;
                 newAmount = newAmount.toFixed(3).toString();
-                console.log('after API', res);
                 ctx.reply(
                     `${amt} ${source} is worth \n${newAmount} ${dest}`,
                     Markup.inlineKeyboard([
@@ -123,4 +122,3 @@ bot.hears('Hello', ({ reply }) => reply('Hello! What\'s up?'));
 bot.hears('Hi', ({ reply }) => reply('Hello! What\'s up?'));
 
 bot.hears(/.*/, ({ match, reply }) => reply(`I really wish i could understand what "${match}" means! As for now you can use /convert to make me convert currencies`));
-bot.startWebhook();

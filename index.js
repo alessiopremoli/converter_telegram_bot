@@ -76,6 +76,9 @@ const currencyConverter = new WizardScene(
         if(ctx.message.text === 'stop' || ctx.message.text === '/stop') {
             leaveWizard(ctx);
         } else {
+            ctx.reply(
+                `Okay let's see this...`,
+            );
             const amt = (ctx.wizard.state.amount = ctx.message.text);
             const source = ctx.wizard.state.currencySource;
             const dest = ctx.wizard.state.currencyDestination;
@@ -84,6 +87,8 @@ const currencyConverter = new WizardScene(
             rates.then(res => {
                 let newAmount = res.data.rates[dest] * amt;
                 newAmount = newAmount.toFixed(3).toString();
+                console.log(newAmount);
+                
                 ctx.reply(
                     `${amt} ${source} is worth \n${newAmount} ${dest}`,
                     Markup.inlineKeyboard([

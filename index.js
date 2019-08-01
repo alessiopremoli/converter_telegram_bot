@@ -84,7 +84,7 @@ const currencyConverter = new WizardScene(
             rates.then(res => {
                 let newAmount = res.data.rates[dest] * amt;
                 newAmount = newAmount.toFixed(3).toString();
-
+                console.log('after API', res);
                 ctx.reply(
                     `${amt} ${source} is worth \n${newAmount} ${dest}`,
                     Markup.inlineKeyboard([

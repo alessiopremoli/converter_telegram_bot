@@ -8,30 +8,30 @@ const session = require("telegraf/session");
 const { enter, leave } = Stage
 
 const Converter = require('./api/currency-converter');
+const verifyUsers = require('./utility/verifyUser.js');
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const URL = process.env.URL;
 const PORT = process.env.PORT || 2000;
+const DEV = process.env ? process.env.ENV === 'dev' : false;
 
-bot.telegram.setWebhook(`${URL}bot${process.env.BOT_TOKEN}`);
-bot.startWebhook(`/bot${process.env.BOT_TOKEN}`, null, PORT);
+bot.help(ctx => {
+    ctx.reply('This is a dev test bot!');
+});
 
-bot.start( ctx =>
-    ctx.reply(
-        `How can I help you, ${ctx.from.first_name}?`,
-        
-        //eventually Markup.keyboard
-        Markup.inlineKeyboard([
-            Markup.callbackButton("Convert currency", "CONVERT_CURRENCY"),
-            // Markup.callbackButton("View Rates", "VIEW_RATES")
-        ]).extra()
-    )
-);
-
-// bot.command("stop", ctx => {
-//     ctx.reply('Ok boss!');
-//     leave('currency_converter');
-// });
+bot.start( ctx => {
+    if(verifyUsers.verifyUser(ctx.from)) {
+        ctx.reply(
+            `How can I help you, ${ctx.from.first_name}?`,
+            
+            Markup.inlineKeyboard([
+                Markup.callbackButton("Convert currency", "CONVERT_CURRENCY"),
+            ]).extra()
+        );
+    } else {
+        ctx.reply('This bot is unavailable for this user')
+    }
+});
 
 bot.action("BACK", ctx => {
     ctx.reply(
@@ -87,8 +87,7 @@ const currencyConverter = new WizardScene(
             rates.then(res => {
                 let newAmount = res.data.rates[dest] * amt;
                 newAmount = newAmount.toFixed(3).toString();
-                console.log(newAmount);
-                
+
                 ctx.reply(
                     `${amt} ${source} is worth \n${newAmount} ${dest}`,
                     Markup.inlineKeyboard([
@@ -127,3 +126,10 @@ bot.hears('Hello', ({ reply }) => reply('Hello! What\'s up?'));
 bot.hears('Hi', ({ reply }) => reply('Hello! What\'s up?'));
 
 bot.hears(/.*/, ({ match, reply }) => reply(`I really wish i could understand what "${match}" means! As for now you can use /convert to make me convert currencies`));
+
+if(!DEV) {
+    bot.telegram.setWebhook(`${URL}bot${process.env.BOT_TOKEN}`);
+    bot.startWebhook(`/bot${process.env.BOT_TOKEN}`, null, PORT);
+} else {
+    bot.launch();
+}

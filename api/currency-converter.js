@@ -9,7 +9,6 @@ module.exports = {
      */
     getRate(source, destination) {
         url = `${BASE_URL}?base=${source}&symbols=${destination}`;
-        console.log(url);
         return Axios.get(url);
     }
 }

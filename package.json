@@ -1,13 +1,10 @@
 {
-  "name": "ap_converter_tutorial_bot",
+  "name": "concerter_telegram_bot",
   "version": "1.0.0",
-  "description": "Currency Converter as Telegram BOT",
+  "description": "Currency Converter as Telegram BOT (from tutorial)",
   "main": "index.js",
   "scripts": {
-    "start": "node index",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon",
-    "deploy": ".\\deploy.bat"
+    "start": "node index"
   },
   "author": "Alessio Premoli",
   "license": "ISC",
